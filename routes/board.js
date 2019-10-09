@@ -6,15 +6,22 @@ var dbConfig = require('../config/database');
 
 var connection = mysql.createConnection(dbConfig);
   /* GET List Page. */
-router.get('/list',function (req,res,next) {
-    res.redirect('/board/list/1')// /board로 접속요청이 들어왔을 때 1페이지로 자동으로 이동하도록 리다이렉트 해줍니다.
-});
 
-router.get('/list/:page', function(req, res, next) {
+router.get('/list',function (req,res,next) {
     var query = connection.query('select idx,title,writer,hit,DATE_FORMAT(moddate, "%Y/%m/%d %T") as moddate from board', function(err,rows){
         if(err) console.log(err);        // 만약 에러값이 존재한다면 로그에 표시합니다.
         //console.log(rows);
-        res.render('read.ejs', { title:'Board List',rows : rows, page : req.params.page}); // view 디렉토리에 있는 list 파일로 이동합니다.
+        res.render('list.ejs', { title:'Post List',rows : rows}); // view 디렉토리에 있는 list 파일로 이동합니다.
+    });
+});
+
+router.get('/list/:page', function(req, res, next) {
+    var query = connection.query('select idx,title,writer,hit,DATE_FORMAT(regdate, "%Y/%m/%d %T") as regdate ,DATE_FORMAT(moddate, "%Y/%m/%d %T") as moddate '+ 
+                                 'from board '+
+                                 `where idx = ${req.params.page}`, function(err,rows){
+        if(err) console.log(err);        // 만약 에러값이 존재한다면 로그에 표시합니다.
+        //console.log(rows);
+        res.render('read.ejs', { title:'View Post',rows : rows}); // view 디렉토리에 있는 list 파일로 이동합니다.
     });
 });
 

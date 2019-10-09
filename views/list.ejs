@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <%
+    var read = rows;
+  %>
+  <body>
+    <h1><%= title %></h1>
+    <table border="2">
+      <tr>
+        <td>번호</td>
+        <td>조회수</td>
+        <td>글쓴이</td>
+        <td>제목</td>
+      </tr>
+      <% for(var i=0; i<read.length && i<10; i++) {%>
+        <tr>
+          <td><%=read[i].idx%></td>
+          <td><%=read[i].hit%></td>
+          <td><%=read[i].writer%></td>
+          <td><a href= "<%=`/board/list/${i+1}`%>"><%=read[i].title%></a></td>
+        </tr>
+      <% } %>
+    </table>
+  </body>
+</html>

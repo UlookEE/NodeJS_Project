@@ -1,28 +1,26 @@
-var express = require('express')
-var mysql = require('mysql');
+const express = require('express')
+const pool = require('./../libs/database');
 
-var router = express.Router();
-var dbConfig = require('../config/database');
+const router = express.Router();
 
-var connection = mysql.createConnection(dbConfig);
-  /* GET List Page. */
+/* GET List Page. */
+router.get('/list', async (req, res) => {
+    let [ rows ] = await pool.query('SELECT `idx`, `title`, `writer`, `hit`, DATE_FORMAT(`moddate`, "%Y/%m/%d %T") as `moddate` FROM `board`');
 
-router.get('/list',function (req,res,next) {
-    var query = connection.query('select idx,title,writer,hit,DATE_FORMAT(moddate, "%Y/%m/%d %T") as moddate from board', function(err,rows){
-        if(err) console.log(err);        // 만약 에러값이 존재한다면 로그에 표시합니다.
-        //console.log(rows);
-        res.render('list.ejs', { title:'Post List',rows : rows}); // view 디렉토리에 있는 list 파일로 이동합니다.
-    });
+    res.render('list', { title: 'Post List', rows }); // view 디렉토리에 있는 list 파일로 이동합니다.
 });
 
-router.get('/list/:page', function(req, res, next) {
-    var query = connection.query('select idx,title,writer,hit,DATE_FORMAT(regdate, "%Y/%m/%d %T") as regdate ,DATE_FORMAT(moddate, "%Y/%m/%d %T") as moddate '+ 
-                                 'from board '+
-                                 `where idx = ${req.params.page}`, function(err,rows){
-        if(err) console.log(err);        // 만약 에러값이 존재한다면 로그에 표시합니다.
-        //console.log(rows);
-        res.render('read.ejs', { title:'View Post',rows : rows}); // view 디렉토리에 있는 list 파일로 이동합니다.
-    });
+router.get('/list/:page', async (req, res) => {
+    let connection = await pool.getConnection();
+
+    let [ rows ] = await connection.query(
+        'SELECT `idx`, `title`, `writer`, `hit`, DATE_FORMAT(`regdate`, "%Y/%m/%d %T") as `regdate`, DATE_FORMAT(`moddate`, "%Y/%m/%d %T") as `moddate` FROM `board` WHERE `idx` = ?',
+        [ req.params.page ]
+    );
+
+    connection.release();
+
+    res.render('read', { title: 'View Post', rows }); // view 디렉토리에 있는 list 파일로 이동합니다.
 });
 
 module.exports = router;

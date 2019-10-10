@@ -1,4 +1,5 @@
 var express = require('express');
+require('express-async-errors');
 var path = require('path');
 
 var app = express();
@@ -9,11 +10,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use('/board', board);
-app.get('/', (req, res)=>{
+app.get('/', (req, res) => {
   res.send('Root');
 });
 
-app.listen(app.get('port'), ()=>{
-  console.log('Express server listening on port ' + app.get('port'));
+const server = app.listen(app.get('port'), () => {
+  console.log('Express server listening on port ' + server.address().port);
 });
-

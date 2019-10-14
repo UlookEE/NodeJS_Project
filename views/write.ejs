@@ -4,16 +4,19 @@
         <title><%= title %></title>
         <link rel='stylesheet' href='/stylesheets/style.css'/>
     </head>
-   
+
+    <script>
+        const sha256 = require("../clients/sha256");
+        
+    </script>
+    
     <body>
-        
         <h1><%= title %></h1>
-        
-        <form action="/board/writeAction" method="post">
-            <table border="1">
+        <form action="/board/writeAction" method="post" >
+            <table border="1"e>
                 <tr>
                     <th>작성자</th>
-                    <td><input type="text" name="name" id="name" required/></td>
+                    <td><input type="text" name="name" id="name" required></td>
                 </tr>
                 <tr>
                     <td>제목</td>
@@ -37,5 +40,7 @@
             </table>
         </form>
     </body>
+
+    
 </html>
  

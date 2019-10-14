@@ -6,10 +6,18 @@
   </head>
   <%
     var read = rows;
+    var page = parseInt(page);
+    let prevPage;
+    let nextPage;
+    if(page > 1 )
+    prevPage = page-1;
+    else
+    prevPage = 1;
+    nextPage = page+1;
   %>
   <body>
     <h1><%= title %></h1>
-    <table border="2">
+    <table border="2" width = "100%">
       <tr>
         <td>번호</td>
         <td>조회수</td>
@@ -21,14 +29,15 @@
           <td><%=read[i].idx%></td>
           <td><%=read[i].hit%></td>
           <td><%=read[i].writer%></td>
-          <td><a href= "<%=`/board/list/${i+1}`%>"><%=read[i].title%></a></td>
+          <td><a href= "<%=`/board/list/view/${read[i].idx}`%>"><%=read[i].title%></a></td>
         </tr>
       <% } %>
-      <tr>
-        <td colspan="6">
-          <a href="/board/write">  글쓰기 </a>
-        </td>
-      </tr>
+      
     </table>
+
+    <a href="/board/write">글쓰기</a>
+    <a href="/board/list/<%= prevPage %>">이전 페이지</a>
+    <a href="/board/list/<%= nextPage %>">다음 페이지</a>
+
   </body>
 </html>

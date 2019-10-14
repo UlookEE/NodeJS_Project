@@ -1,7 +1,6 @@
 var express = require('express');
 require('express-async-errors');
 var path = require('path');
-const crypto = require('crypto');
 var bodyParser = require('body-parser');
 
 var board = require('./routes/board');

@@ -22,7 +22,7 @@
     "openssl": "^1.1.0",
     "openssl-nodejs": "^1.0.5",
     "pm2": "^3.5.1",
-    "pug": "^2.0.4"
+    "pug": "^3.0.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.3"
